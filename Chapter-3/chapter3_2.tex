@@ -1,0 +1,382 @@
+\documentclass{book}
+\usepackage[allcolors=true]{hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{tikz, xcolor}
+
+%\newcommand\bg[2]{
+%\begin{center} \fcolorbox{white}{BGgris}{\parbox{.9\linewidth}{\begin{large} %\textit{#1} \end{large} \\ #2 }}
+%\end{center}}
+
+\begin{document}
+
+\chapter{L'équation de Schrödinger}\label{chap:chap3}
+
+Dans le chapitre précédent nous avons montré comment une équation d'onde pouvait décrire une particule quantique.
+Dans le régime non-relativiste, cette équation s'appelle \textbf{équation de Schrödinger}:
+
+\begin{equation}\label{eq:schrodinger}
+  i\hbar\;  \dfrac{\partial}{\partial t}\;  \psi = -\dfrac{\hbar ^2}{2m} \; \Delta \psi + V(\vec r, t) \;  \psi 
+  %\quad (=\hat{H} \; \psi)
+\end{equation}
+
+
+
+Dans ce chapitre, nous étudierons cette équation et ses propriétés, dicuterons 
+ son contenu physique (son interprétation probabiliste), et enfin traiterons quelques exemples de
+potentiels qui se prêtent à une solution simple.  
+Nous verrons émerger des phénomènes nouveaux, comme la quantification de l'énergie, ou l'effet tunnel. Nous verrons une application à la physique nucléaire.
+
+
+
+
+
+\section{Interprétation probabiliste de la mécanique quantique}
+
+Soit $\psi(\vec r, t)$ une solution de l'équation de Schrödinger \eqref{eq:schrodinger}.
+
+Définission la {\bf densité de probabilité}
+\begin{equation}
+\label{eq:densite_proba}
+\rho(\vec r, t)= \vert \psi(\vec r, t) \vert^2
+\end{equation}
+et le {\bf courant de probabilité}
+\begin{equation} \label{eq:courant_proba}
+\vec J := \dfrac{1}{m} \; \mathcal{I}m \;\left[\hbar \bar{\psi}(\vec \nabla \psi)\right] \ .
+\end{equation} 
+
+Nous allons démontrer l'équation de continuité:
+\begin{equation} \label{eq:continuite_proba}
+\boxed{\dfrac{\partial}{\partial t} \rho(\vec x, t) + \mathrm{div} \vec J = 0}
+\end{equation}
+
+
+
+\begin{proof}
+En prenant le complexe conjugé de \eqref{eq:schrodinger}, nous avons
+\begin{equation} 
+- i\hbar \partial_t \bar{\psi} = -\dfrac{\hbar^2}{2m} \Delta \bar{\psi}+ V \bar{\psi} 
+\end{equation}
+
+Par conséquent, en dérivant $\rho$ par rapport au temps et en multipliant par $i\hbar$ :
+\begin{eqnarray*}
+i\hbar \partial_t \rho &=& 
+( i\hbar \partial_t \psi )(\bar{\psi})-(\psi )
+(-i\hbar \partial_t \bar{\psi})\\
+&=&\left(-\dfrac{\hbar^2}{2m} \Delta \psi\right) \bar{\psi} \quad - \quad \left(-\dfrac{\hbar^2}{2m} \Delta \bar{\psi}\right)\psi \\
+&=& -\dfrac{\hbar^2}{2m} \left( \bar{\psi} \Delta \psi - \psi \Delta \bar{\psi} \right) \\
+&=& -\dfrac{\hbar^2}{2m} \vec \nabla \cdot \left( \bar{\psi} \vec \nabla  \psi - \psi \vec \nabla  \bar{\psi} \right)
+\end{eqnarray*}
+Par conséquent
+\begin{eqnarray*}
+0 &=& \quad \partial_t \rho + \dfrac{\hbar}{2mi} \vec \nabla \cdot \left( \bar{\psi} \vec \nabla  \psi - \psi \vec \nabla  \bar{\psi} \right)\ .
+\end{eqnarray*}
+Ce qui implique \eqref{eq:courant_proba}.
+\end{proof}
+
+
+Soit $\psi$ une solution de l'équation de Schrödinger qui décroit (suffisement vite) à l'infini. Alors l'intégrale sur tout l'espace de la densité de probabilité est indépendante du temps:
+\begin{equation} \label{eq:conserv_proba}
+\boxed{
+\int_{\mathbb R^3} d^3 x\  \rho(\vec x, t)  = \mathrm{constante}
+}
+\end{equation}
+
+\begin{proof}
+\begin{eqnarray*}
+ \frac{d }{dt} 
+\int_{\mathbb R^3} d^3 x\  \rho(\vec x, t) 
+&=&
+\int_{\mathbb R^3} d^3 x\   \frac{d\rho(\vec x, t) }{dt} \\
+&=&
+\int_{\mathbb R^3} d^3  x\   -\vec \nabla \cdot \vec J(\vec x, t) \\
+&=&
+\int_\infty \vec{dS} \cdot \vec J\\
+&=&0
+\end{eqnarray*}
+ou nous avons utilisé le Théorème de Stokes, et le fait que $\vec J(\vec x, t)$ s'annule à l'infini.
+\end{proof}
+
+Une solution $\psi$ de l'équation de Schrödinger est {\bf normalisée} si
+\begin{equation}
+\int_{\mathbb R^3} d^3 x \ \vert \psi(\vec x, t) \vert^2 =1\ .
+\end{equation}
+En vertu de \eqref{eq:conserv_proba}, si $\psi$ est normalisée à un instant $t$, elle est normalisée à tous les instants.
+
+Nous interpréterons $\rho(\vec x, t) $ comme la densité de probabilité de trouver la particule à la position $\vec x$ à l'instant $t$. Par exemple 
+\begin{itemize}
+\item Si $V$ est une région de l'espace, $\int_V d^3 x\   \rho(\vec x, t) $ est la probabilité de trouver la particule dans $V$ à l'instant $t$.\\
+\item 
+La valeur moyenne de la position de la particule à l'instant $t$ est donnée par
+$$\langle x(t) \rangle = \int_{\mathbb R^3} d^3 x \ x \rho(\vec x, t)\ .$$
+\\
+\item 
+La variance de la position de la particule à l'instant $t$ est donnée par
+$$\Delta x^2(t)  = \int_{\mathbb R^3} d^3 x \ (x -\langle x(t) \rangle)^2   \rho(\vec x, t) \ .$$
+\end{itemize}
+
+
+
+{\bf Exemple d'une onde plane.} {Considérons l'équation pour la particule libre (l'équation de Schrödinger avec $V=0$). 
+Considérons une onde plane $A e^{-i\omega t} e ^{i \vec k \cdot \vec r}$ solution de cette équation. Ce n'est pas une solution physique, car elle ne peut pas être normalisée. En effet 
+la densité de probabilité est $\rho(\vec x, t)= \vert A\vert^2$, et son intégrale sur tout l'espace est infini (sauf si $A=0$).
+
+Il est néanmoins intéressant de calculer le courant de probabilité pour cette onde plane. On trouve que
+ $$\vec J = \dfrac{\hbar \vec k }{m} \vert A\vert ^2 
+ = \vec v \rho
+\ .$$ 
+Dans ce cas, le courant de probabilité est égal à la densité de probabilité fois la vitesse que l'on associerait à cette onde plane à travers les relations de de Broglie.
+}
+
+{\bf Origine de l'interprétation probabiliste: étude des collisions.}{
+Max Born connaissait les travaux de Schrödinger.
+Il connaissait aussi les expériences (comme l'expérience de Rutherford) dans lesquelles des particules (électron, particule alpha) collisonnent avec des atomes. Il s'est rendu compte que l'équation de Schrödinger pouvait s'appliquer au cas d'une collision. Il montre que dans ce cas la solution de l'équation de Schrödinger prendra la forme
+$$ \psi(\vec r,t) = e^{- i \omega t} \left( 
+\underbrace{ A \ e^{i \vec k \cdot \vec r}}_{\text{onde incidente}} \quad + \underbrace{\int d \Omega \; \frac {e^{i  k  r}}{r} \; f(\Omega)}_{\text{composante diffusée}} \right)$$
+ou $\Omega$ est l'angle polaire.
+
+La solution de l'équation de Schödinger contient de l'information sur la diffusion dans \textbf{toutes les directions} (à travers l'intégrale sur $\Omega$),
+alors que dans le laboratoire on détecte les particules une par une, diffusée chaque fois dans une direction spécifique.
+Born en déduit alors que 
+ la solution de l'équation de Schrödinger doit  décrire 
+ la \textbf{probabilité de diffusion} dans chaque direction.}
+
+
+
+
+
+
+\section{Description quantique d'une particule libre}
+Considérons une particule dont l'énergie potentielle est nulle, $V=0$ (par exemple un électron suffisamment loin de tout corps). La particule n'étant soumise à aucune force, on dit qu'elle est libre.
+
+Dans ce cas, l'équation de Schrödinger devient 
+$$i \hbar \partial_t \psi = -\frac{\hbar^2}{2m} \Delta \psi\ ,$$ 
+et elle admet alors des solutions de la forme : 
+\begin{equation}\label{eq:solution_schrod}
+\psi(\vec r, t) = A \; e^{-i\omega(k) t} \; e ^{i \vec k \cdot \vec r} \; ,
+\end{equation}
+avec 
+\begin{equation}\label{eq:relation_dispersion}
+\omega(k) = \dfrac{\hbar k^2}{2m} \quad \text{(relation de dispersion)}
+\end{equation}
+
+\textit{Remarque : } Par les relations de de Broglie, cette dernière équation \ref{eq:relation_dispersion} nous donne que $E = \frac{p^2}{2m}$. 
+
+Par la solution \ref{eq:solution_schrod}, on observe que $$ \lvert \psi(\vec{r},t) \rvert^2 = \lvert A \rvert^2 .$$
+Cela signifie donc que l'onde plane représente une particule dont la densité de probabilité de présence est uniforme dans tout l'espace. 
+
+Cependant, nous pouvons facilement constater qu'elle n'est pas de carré sommable (l' intégrale de $\vert \psi \vert^2$ sur tout l'espace diverge). Ainsi, l'onde plane \textbf{ne représente pas} un état physique. Une superposition d'onde plane peut par contre avoir du sens; c'est donc ce dont on va discuter à présent. 
+
+\textbf{Solution générale :} \\
+Par le principe de superposition, une combinaison linéaire de solutions du type onde plane reste une solution, et nous pouvons écrire cette combinaison linéaire comme: 
+\begin{equation} \label{eq:schrod_sol_gen}
+\psi(\vec r, t) = \dfrac{1}{(2\pi)^{3/2}} \int d ^3 k \; g(\vec k) \; e^{-i\omega(k) t} \; e^{i\vec k \cdot \vec r} \; .
+\end{equation}
+Ceci constitue donc la solution générale à l'équation de Schrödinger pour une particule libre.
+%, et on dit également que cette superposition d'ondes forme un \textbf{paquet d'ondes}. 
+
+Afin de comprendre ce que représente $g(k)$, restreignons nous à un mouvement à 1D (dans la direction $x$ par exemple), et à un instant donné $t=0$.
+
+$$\psi(x,0) = \dfrac{1}{\sqrt{2\pi}} \int_{-\infty} ^{+\infty} g(k) e^{ikx} \; d k\ . $$
+On voit sur cette équation que $g(k)$ n'est rien autre que la transformée de Fourier de $\psi(x,0)$. %({%\color{blue}
+%{voir annexe sur notions de math}})
+Par conséquent:
+$$g(k) = \frac{1}{\sqrt{2 \pi}}\int_{-\infty} ^{+\infty} \psi(x,0) e^{-ikx} \; d x \ .
+$$
+%$g(k)$ et $\psi(x,0)$ ont donc même module, par le théorème de Plancherel. 
+
+De même la transformée de Fourier de la fonction d'onde à l'instant $t$ est 
+$$g(k,t) = \frac{1}{\sqrt{2 \pi}}\int_{-\infty} ^{+\infty} \psi(x,t) e^{-ikx} \; d x 
+=
+g(k) e^{-i\omega(k) t}\ .
+$$
+
+Notons que pour une solution normalisée de l'équation de Schrödinger, nous avons
+$$1 = \int_{-\infty} ^{+\infty}  \vert \psi(x,t) \vert^2\;  dx=
+\int_{-\infty} ^{+\infty}  \vert g(k,t) \vert^2\;  dk$$
+ou la seconde identité découle du théorème de Plancherel. Notons que 
+$\vert g(k,t) \vert^2 = \vert g(k) \vert^2$ ne dépends pas du temps. Et que 
+$\vert g(k) \vert^2$ peut s'interpréter comme la densité de probabilité que la particule ait impulsion $p=\hbar k$.
+
+ 
+
+
+
+\subsection{Paquet d'ondes à une dimension. Vitesse de phase et vitesse de groupe.}
+
+
+
+Une onde plane \eqref{eq:solution_schrod}, bien que solution à l'équation de Schrödinger, n'est pas une solution physiquement acceptable car elle ne peut pas être normalisée. Par contre en prenant une superposition d'ondes planes, on peut créer une solution normalisée. Si cette solution est localisée dans une région de l'espace, on parle de ``paquet d'onde".
+
+Pour beaucoup de phénomènes ondulatoires, par exemple propagation d'ondes lumineuses dans un fibre optique, propagation d'ondes à la surface de l'eau (les vagues), propagation d'ondes sismiques dans la croute terrestre, etc... on peut déterminer, soit de manière théorique, soit de manière empirique, une relation entre la fréquence et le nombre d'onde
+\begin{equation}
+\omega = \omega(k)\ . \label{eq:relationDisp}
+\end{equation}
+On appelle ceci une ``relation de dispersion".
+
+Reamrque. Un exemple intéressant est le cas d'onde à la surface d'un liquide (les vagues). Dans ce cas on peut montrer que la relation de dispersion a la form
+\begin{equation}
+\omega = \sqrt { g k^2 + \frac{\sigma}{\rho}k^3}
+\quad \text{(relation de dispersion pour les vagues en eau profonde )}
+\ . \label{eq:relationDisp-vagues}
+\end{equation}
+ou $g$ est l'accélération de la pesanteur, $\sigma$ la tension superficielle de l'eau, et $\rho$ la masse volumique du liquide. Cette relation de dispersion complexe donne lieu à une riche variété de phènomènes. Cette relation de dispersion doit être modifiée si la profondeur de l'eau est faible (par rapport à la longueur d'onde).
+
+Dans le reste de ce chapitre, nous allons étudier la propagation d'un paquet d'onde à 1 dimsion, en présence d'une relation de dispersion \eqref{eq:relationDisp}.
+Nous l'illustrerons sur le cas de la particule libre, pour laquelle la relation de dispersion est donnée par \eqref{eq:relation_dispersion}.
+
+
+
+\subsubsection{Onde plane}
+Pour une onde plane à une dimension :
+$$\psi(x,t) = A \; e^{-i\omega(k) t} \; e ^{ikx} \; ,$$
+La vitesse de propagation des crètes de l'onde plane est la quantité $\omega/k$, qu'on appelle la \textit{vitesse de phase} :
+\begin{equation}
+\boxed{
+\text{Vitesse de phase : } \quad v_\varphi = \dfrac{\omega(k)}{k} \ .
+}
+\label{eq:vphase}
+\end{equation}
+
+Dans le cas d'une particule libre nous avons
+$v_\varphi = \dfrac{\hbar k}{2m}$.
+
+
+\subsubsection{Paquet d'ondes}
+Considérons un paquet d'ondes :
+$$A(x, t) = \int d k \; g(k) \; e^{-i\omega(k) t} \; e^{ikx} \; .$$
+Nous prendrons le paquet d'onde centré sur la fréquence $k_0$, c'est à dire que $g(k)$ est centré sur $k_0$. 
+Par exemple on pourrait prendre une gaussienne de largeur $\Delta$ 
+$$g(k) = e^{-\frac{(k-k_0)^2}{2\Delta^2}}\ .$$
+
+Notons qu'en $t=0$ nous avons
+\begin{eqnarray}
+A(x, 0) &=& \int d k \; g(k) \;  e^{ikx} \; \nonumber\\
+&=& e^{ik_0 x} \int d k' \; g(k_0 + k') \;  e^{ik'x} \; \nonumber\\
+&=& e^{ik_0 x}  A_0(x)
+\end{eqnarray}
+ou $k' = k-k_0$ et l'intégrale sur $k'$ prends ses valeurs dans une petite région autour de $0$ (dans l'exemple de largeur $\Delta$) et $A_0$ est l'enveloppe du paquet d'onde à l'instant $t=0$.
+
+Etudions maintenant le paquet d'onde à l'instant $t$. 
+Comme $k$ est proche de $k_0$, nous pouvons développer 
+ $\omega(k)$ en série autour de $k_0$ :
+$$ \omega((k) = \omega(k_0) + \omega '(k_0) (k-k_0) + \omega''(k_0) \frac{(k-k_0)^2}{2} + O((k-k_0)^3)\; .$$
+
+Gardons pour le moment uniquement les termes d'ordre 0 et d'ordre 1 en $(k-k_0)$. Nous avons alors
+\begin{equation}
+A(x, t) \approx \int d k \; g(k) \; e^{-i\left( \omega(k_0) + \omega'(k_0) (k-k_0)  \right)  t} \; e^{ikx} \; .\label{eq:Axt}
+\end{equation}
+Nous pouvons réécrire ceci comme
+\begin{eqnarray}
+A(x, t) &=&  e^{-i \omega(k_0)t } e^{ik_0 x}  \int d k' \; g(k_0+k') \;  e^{ik' (x-  \omega ' t)}\nonumber\\
+&=&e^{-i \omega(k_0)t } e^{ik_0 x}  A_0(x-\omega' t, 0)\ .
+\label{eq:paquetonde-t}
+\end{eqnarray}
+Dans le cadre de l'approximation faite, les crètes des ondes se déplacent avec la vitesse de phase $v_\varphi =  omega(k_0) / k_0$ (le préfacteur dans \eqref{eq:paquetonde-t}).
+L'enveloppe du paquet d'onde ne change pas de forme, mais se déplace avec la vitesse $\omega'$.
+ On appelle cette quantité la \textit{vitesse de groupe}.
+\begin{equation}
+\boxed{
+\text{Vitesse de groupe : } \quad v_g(k) = \dfrac{\partial \omega}{\partial k} 
+}
+\end{equation}
+
+Pour la particule quantique libre, la vitesse de groupe est 
+$v_g = \dfrac{\hbar k}{m}$ et correspond à la vitesse classique $p/m$ (en utilisant les relations de de Broglie). Le centre du paquet d'onde va donc se déplacer avec la vitesse classique, tandis que les crêtes des ondes se déplacent à la vitesse moitié (voir expression après l'équation \eqref{eq:vphase}).
+
+Application. Pour les vagues à la surface de l'eau, montrer que la vitesse de groupe à un minimum. Déterminer la longueur d'onde correspondante. Cette vitesse de groupe minimum s'observe facilement en lancant une pierre dans l'eau, et en observant la zone complètement calme qui s'étale autour du point d'impact à la vitesse de groupe minimum.
+
+Application. La vitesse de groupe est la vitesse à laquelle on peut envoyer de l'information avec des ondes. La vitesse de phase de la lumière dans certains matériaux et à certaines longueurs d'onde (exemples dans le verre pour les rayons X) peut excéder la vitesse de la lumière $c$. Mais la vitesse de groupe, qui est la vitesse à laquelle les paquets d'onde, et donc l'information, se propage est inférieure à $c$.
+
+
+\subsection{Propagation et étalement d'un paquet d'onde gaussien.}
+
+Dans la section précédente nous avons négligé le terme $i\omega'' (k-k_0)^2 t$ dans l'exponentientielle de l'équation \eqref{eq:Axt}. Pour des temps longs, ce terme ne peut pas être négligé. Il va donner lieu à un étalement du paquet d'onde. Ce phénomène peut être mis en évidence dans un cas ou l'intégrale sur $k$ peut  être faite exactement, le paquet d'onde gaussien.
+
+Rappelons d'abord quelques intégrales.
+\begin{equation}
+\int dx e^{-x^2} = \sqrt{\pi}
+\end{equation}
+et par conséquent, en faisant un changement de variable, nous avons
+\begin{equation}
+\int dx e^{-\frac{(x-\mu)^2}{2 \sigma^2}} = \sqrt{2\pi}\sigma
+\end{equation}
+pour $\mu$ réel et $\sigma$ réel positif.
+Finalement nous avons un résultat similaire pour des coefficients complexes:
+\begin{eqnarray}
+\int_{- \infty}^{+\infty} dx\ e^{-ax^2 +bx +c}&=& \sqrt{\frac{\pi}{a}} \exp (\frac{b^2}{4a} + c)\nonumber\\
+& & a,b,c\in \mathbb{C}\ , \ Re(a)\geq 0\ .
+\label{eq:gaussianInt}
+\end{eqnarray}
+Ce dernier résultat se démontre par intégrale de contour dans le plan complexe. La condition sur $Re(a)\geq 0$ est nécessaire pour que l'intégrale converge, ce qui permet de se ramener au cas $a$ réel.
+
+**********
+
+A COMPLETER ET CORRIGER A PARTIR DICI
+
+**********
+
+Un paquet d'onde \textbf{gaussien} s'écrit comme :
+\begin{equation}
+\psi(x, t) = \dfrac{\sqrt{a}}{\left(2\pi\right) ^{3/4}} \int_{-\infty} ^{+\infty} \d k \; \exp \left[-\dfrac{a^2}{4} (k-k_0)^2\right] \; \exp\left[i \left(kx - \dfrac{\hbar k^2}{2m}t\right)\right]
+\end{equation}
+que nous allons évaluer en utilisant [...]. Après évaluation de l'intégrale, on trouve une expression de $\psi$ qui est encore une gaussienne, comme quoi la transformée de Fourier d'une gaussienne est bel et bien encore une gaussienne, mais la largeur trouvée est dépendante du temps :
+\begin{equation}
+\Delta x = \dfrac{a}{2} \sqrt{ 1 + \dfrac{4 \hbar ^2 t^2}{m^2 a^4}}
+\end{equation}
+ce qui montre que la dispersion spatiale dépend du temps. En revanche, celle sur l'impulsion est donnée par $$\Delta p = \hbar \Delta k$$, où $\Delta k$ est la largeur de la gaussienne $g(k-k_0)$ donnée par $|g(k,t=0)|^2$ qui est la même qu'en tout temps parce que $$g(k,t) = e^{-i\omega t} g(k,0)$$ ce qui implique la conservation du module à travers le temps. Autrement dit, la largeur de la gaussienne, 
+$$\Delta k = |g(k,t=0)|^2 = \dfrac{1}{a}$$
+est constante : il n'y a donc pas d'étalement sur l'impulsion.
+
+
+
+\section{Equation de Schrödinger en potentiel stationnaire}
+Reprenons la forme standard de l'équation de Schrödinger, en supposant cette fois que le \textbf{potentiel ne dépend pas du temps}. Nous obtenons l'équation \eqref{eq:schrodinger_stationnaire}, où le potentiel est dit \textbf{stationnaire}. 
+\begin{equation} \label{eq:schrodinger_stationnaire}
+i\hbar \dfrac{\partial}{\partial t} \psi = -\dfrac{\hbar ^2}{2m} \Delta \psi + V(\vec r, t) \psi
+\end{equation}
+Résolvons-la par la méthode de séparation des variables. Montrons en effet qu'il existe $\varphi(\vec x)$ et $\chi(t)$ tels que $$\psi(\vec r, t) = \varphi(\vec x) \chi(t)\; .$$
+
+En écrivant l'équation différentielle \eqref{eq:schrodinger_stationnaire} avec ce changement de fonctions, nous pouvons arriver à la forme suivante, séparant les parties temporelle et spatiale :
+\begin{equation}
+i\hbar \dfrac{1}{\chi(t)} \; \dfrac{d}{dt} \chi(t) \; = \; \dfrac{1}{\varphi(\vec r)} \left[ -\dfrac{\hbar ^2}{2m} \; \Delta \varphi(\vec r) \right] + V(\vec r)
+\end{equation}
+L'équation \eqref{eq:schrodinger_stationnaire} sépare les variables temporelle et spatiale, de telle sorte à les faire égaler obligatoirement une constante pour satisfaire l'égalité. Notons cette constante $\hbar \omega$. 
+\subsection{Résolution de la partie temporelle de l'équation de Schrödinger en potentiel stationnaire}
+Cette étape-ci de la résolution consiste à égaler la partie temporelle de \eqref{eq:schrodinger_stationnaire} à $\hbar \omega$ et à résoudre l'équation différentielle, qui est du premier ordre en le temps. La solution est une exponentielle complexe en le temps.
+
+\begin{equation} \label{eq:resol_stat_temps}
+\begin{array}{lrl r}
+& i\hbar \dfrac{1}{\chi(t)} \; \dfrac{d}{dt} \chi(t) &= \hbar \omega  &\\
+\iff& i \hbar \; \dfrac{d}{dt} \chi(t) &= \hbar \omega \;  \chi(t)  &\\
+\iff & \chi(t) &= A \; \exp(-i\omega t)  &\quad A \in \mathbb{C}
+\end{array}
+\end{equation}
+
+
+\subsection{Résolution de la partie spatiale de l'équation de Schrödinger en potentiel stationnaire}
+Il vient ici d'égaler le second membre de \eqref{eq:schrodinger_stationnaire} à $\hbar \omega$. Il vient :
+
+\begin{equation} \label{eq:resol_stat_pos}
+\varphi(\vec r) \quad \mathrm{t.q} \quad \left[-\dfrac{\hbar ^2}{2m} \; \Delta + V(\vec r) \right] \; \varphi(\vec r) \; = \underbrace{\hbar	\omega}_E \; \varphi(\vec r)
+\end{equation}
+
+
+La constante $\hbar \omega$ correspond bien à l'énergie de la particule. En résolvant \eqref{eq:resol_stat_pos}, cela nous donne la forme d'une solution à l'équation de Schrödinger en potentiel stationnaire.
+
+\begin{equation}
+\psi(\vec r, t) = \varphi(\vec r) \; \;  A \;e^{-i\omega t} \quad \text{solution de \eqref{eq:schrodinger_stationnaire}}
+\end{equation}
+
+
+Une telle fonction est appelée \textbf{solution stationnaire de l'équation de Schrödinger}, car elle conduit à une densité de probabilité indépendante du temps. On remarque que pour une solution stationnaire, \textbf{une seule pulsation apparaît} : les états d'énergie y sont bien définis. Là où en classique on insiste sur le fait que l'énergie doit bien être conservée, ici on insiste sur le fait que les états d'énergie doivent être bien définis, qu'il existe une énergie bien déterminée. \\
+
+La résolution de \eqref{eq:resol_stat_pos} dépend de la forme du potentiel. Nous en explorons quelques exemples. Nous pouvons déjà noter que pour faire apparaître des effets quantiques, les potentiels doivent présenter des variations sur des faibles longueurs, typiquement plus faibles que la longueur d'onde des ondes correspondant aux particules en jeu.
+
+
+
+
+
+\end{document}
+
+%Ajout schéma de Massar : graphes des données expérimentales 
