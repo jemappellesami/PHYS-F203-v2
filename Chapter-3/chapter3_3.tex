@@ -70,10 +70,26 @@ La séparation des variables s'écrit :
 $$\psi(x,t) = \chi(t) \varphi(x)$$ et la partie temporelle se résout facilement.
 $$\chi(t) = \chi_0 \; e^{-iE\; t/\hbar}$$
 La partie spatiale elle s'écrit :
+$$
+\left(-\dfrac{\hbar ^2}{2m} \dfrac{ d ^2}{d x^2 }  + V(x)\right) \varphi(x) \; = \; E  $$
+Le problème du puits de potentiel ne demande pas que de résoudre cette équation différentielle. En effet, c'est un problème avant tout \textbf{physique}, et il impose naturellement des conditions aux bords. Nous savons que la particule ne peut pas se trouver aux murs du potentiel ($x=0$ ou $x=L$) ni à l'intérieur des murs (en dehors de $]0,L[$) car elle ne peut pas exister dans une zone où le potentiel est infini. Alors, nous avons les conditions aux bords suivantes :
+$$\text{Conditions aux bords : }\quad 
+\left\{
+  \begin{array}{ll}
+    \varphi(0) &= 0 \\
+    \varphi(L) &= 0 \\
+  \end{array}
+\right.
+$$
+
+\subsubsection{Quantification de l'énergie}
+De manière complète, l'équation différentielle pour la partie spatiale de l'équation s'écrit 
 $$\left \{ \begin{array}{ll}
-\left(-\dfrac{\hbar ^2}{2m} \dfrac{ d ^2}{d x^2 }  + V(x)\right) \varphi(x) \; &= \; E \\ \strut \\
-\text{Conditions au bord : } \quad \varphi(0) &= \varphi(L)
-\end{array} \right. $$
+  \left(-\dfrac{\hbar ^2}{2m} \dfrac{ d ^2}{d x^2 }  + V(x)\right) \varphi(x) \; &= \; E \\ \strut \\
+  \text{Conditions au bord : } \quad \varphi(0) &= \varphi(L) = 0
+  \end{array} \right. \; . $$
+
+
 Nous allons nous intéresser qu'au cas où la particule est entre $0$ et $L$, car elle ne peut pas exister dans une zone où le potentiel est infini. \textbf{Dans le cas où} $0<x<L$, nous avons donc un potentiel nul et les conditions aux bords à respecter, d'où :
 \begin{equation}
 \begin{array}{lrl}
@@ -91,16 +107,74 @@ Les conditions aux bords imposent donc une condition sur $k_n$, et \textit{a for
 \begin{equation}\label{eq:quantification_energie}
 \boxed{\text{Quantification de l'énergie : } \quad E_n = \dfrac{\hbar ^2 \pi ^2 n ^2}{2m \; L^2}}
 \end{equation}
-De retour à l'équation de Schrödinger avec la forme générale de $\varphi(x)$, avec $\beta = 0$ et $\alpha$ indéterminé, la solution à \eqref{eq:schrodinger_1D} s'écrit comme produit de $\varphi(x)$ et de $\chi(t)$ :
-$$\psi_n(x,t) = A \; e^{-i \dfrac{E_n}{\hbar}t} \; \sin(\dfrac{n\pi}{L} \; x) $$
+
+\subsubsection{Normalisation des solutions $\psi_n$}
+De retour à l'équation de Schrödinger avec la forme générale de $\varphi(x)$, avec $\beta = 0$ et $\alpha$ indéterminé, la solution à \eqref{eq:schrodinger_1D} s'écrit pour un niveau d'énergie $E_n$ comme produit de $\varphi_n(x)$ et de $\chi_n(t)$ :
+$$\psi_n(x,t) = A \; \underbrace{e^{-i \dfrac{E_n}{\hbar}t}}_{\chi_n(t)} \; \underbrace{\sin\left(\dfrac{n\pi}{L} \; x\right)}_{\varphi_n(x)} \; ,$$
+avec un coefficient $A \in \mathbb{C}$. Ce coefficient multiplie la fonction d'onde et nous permettra d'avoir une fonction d'onde $\psi_n$ \textbf{normée} pour chaque état d'énergie $E_n$, et ce en tout temps $t$. Ceci est d'une importance particulière qui sera rappelée au chapitre 4. La fonction $\psi_n$ étant à valeurs complexes, la norme utilisée sera celle des fonctions à valeurs complexes. Ainsi, avoir $|\psi_n|^2 = 1$ revient à imposer, vu que la fonction prend des valeurs nulles en dehors de $]0,L[$, 
+$$
+\int_{-\infty} ^{+\infty} |\psi_n(x)|^2 \; dx = \int_{0} ^{L}\left| A \; e^{-i \dfrac{E_n}{\hbar}t} \; \sin \left(\dfrac{n\pi}{L}\right)\;\right|^2 dx =  1
+\; .
+$$
+Or, le module d'une exponentielle purement imaginaire est égal à $1$, et le module d'un produit est égal au produit des modules : ainsi, vu que $A$ est indépendant de $x$, il peut sortir de l'intégrale. Nous avons alors
+$$
+\int_{0} ^{L} \sin\left(\dfrac{n\pi}{L}\right)^2 dx = \dfrac{1}{|A|^2}
+$$
+Ce qui peut s'évaluer en utilisant la formule de Carnot :
+$$
+\sin(\alpha)^2 = \frac{1 }{2}(1-\cos(2\alpha))
+$$
+en 
+$$
+\int_{0} ^{L} \dfrac{1 }{2}\left(1-\cos\left(2\; \dfrac{n\pi}{L}\right)\right) dx = \dfrac{1}{|A|^2}
+$$
+$$
+\iff |A| = \sqrt{\dfrac{2}{L}}
+$$
+Nous avons donc que la solution d'énergie $E_n$ a la forme
+$$\psi_n(x,t) = A \; e^{-i \dfrac{E_n}{\hbar}t} \; \sin\left(\dfrac{n\pi}{L} \; x\right) \; ,$$
+avec $A$ un coefficient complexe de norme $(2/L)^{1/2}$. Nous pouvons, sans perdre de généralité, \textit{choisir} $A$ comme étant \textbf{réel et positif}, c'est-à-dire \textit{choisir sa phase}. Un choix de phase différent n'impacte en rien les propriétés physiques de l'état.
+$$\psi_n(x,t) = \sqrt{\dfrac{2 }{L}} \; e^{-i \dfrac{E_n}{\hbar}t} \; \sin\left(\dfrac{n\pi}{L} \; x\right) \; ,$$
+
+\subsubsection{Solution générale}
 Pour obtenir la solution générale, il convient de sommer sur les états d'énergie :
-$$\psi(x,t) = \sum_{n=1} ^{+\infty} \psi_n(x,t) $$
+
+\begin{equation}\label{eq:chap3-puits_fourier}
+  \psi(x,t) = \sum_{n=1} ^{+\infty} c_n \psi_n(x,t)  = \sum_{n=1} ^{+\infty} c_n \sqrt{\dfrac{2 }{L}} \; e^{-i \dfrac{E_n}{\hbar}t} \; \sin\left(\dfrac{n\pi}{L} \; x\right)
+\end{equation}
+où les coefficients $c_n$ sont tels que 
+$$
+\sum_{n=1} ^{\infty} |c_n|^2 = 1
+$$
+pour que la solution générale soit normée. 
+
+\subsubsection{Lien avec les séries de Fourier}
+Notons que la solution \eqref{eq:chap3-puits_fourier} ressemble à un développement en série de Fourier sur l'espace des fonctions $\varphi_n$ (la partie spatiale de $\psi_n$) si elles forment une base orthonormée. Pour cela, il faut que pour deux niveaux d'énergie différents $n, n' \in \mathbb{N}$ :
+$$
+\int_0 ^L \varphi_{n_1}(x) \varphi_{n_2}^*(x) \; dx = \delta_{n\; n'} \; .
+$$
+Notons bien qu'ici on évalue le fait que les $\varphi_n$ soient orthonormées, car on veut qu'elles constituent notre base pour le développement en série de Fourier. Nous ne nous intéressons pas aux $\chi_n$ ! Evaluons le membre de gauche. Les $\varphi_n$ sont réelles, donc la conjugaison peut se retirer.
+$$
+\int_0 ^L \varphi_n(x) \varphi_{n'}(x) = 
+\int_0 ^L \dfrac{2 }{L} \sin\left(\dfrac{n\pi}{L} x\right)\sin\left(\dfrac{n'\pi}{L} x\right) \; dx = \delta_{n\; n'}
+$$
+car le système de fonctions $\left\{\sin\left(\dfrac{n\pi}{L} x\right)\; ; n\in\mathbb{N}_0\right\}$ est orthogonal sur $[0,L]$ (voir un cours sur les Séries de Fourier pour la justification).
+
+\subsubsection{Conclusion}
+Les conclusions que nous pouvons tirer pour la résolution de l'équation de Schrödinger dans le cas d'un puits de potentiel de largeur $L$ sont :
+\begin{itemize}
+  \item Commencer par une séparation des variables : l'énergie de chaque état est contenue dans l'\textbf{évolution temporelle} $\chi_n$.
+  \item La physique du problème impose des conditions aux bords sur la partie spatiale, et ceci mène à une \textbf{quantification de l'énergie} \eqref{eq:quantification_energie}.
+  \item Une fois les deux parties obtenues, spatiale et temporelle, les multiplier donne la solution pour un état d'énergie. Cette solution est à \textbf{normer} (voir chapitre 4).
+  \item Une fois normées, les fonctions peuvent se sommer pour constituer la solution générale. Ici, la chose importante à remarquer est que l'espace des fonctions $\varphi_n$ calculées lors de la séparation des variables constitue en fait un \textbf{système orthonormé} et donc la solution générale \eqref{eq:chap3-puits_fourier} peut se comprendre comme le \textbf{développement en série de Fourier} de $\psi$.
+\end{itemize}
+
 \subsection{Puits de potentiel fini}
 Un puits de potentiel fini est un cas assez basique de potentiel carré. Une image vaut mieux que mille mots :
 
 \begin{figure}[h]
   \centering
-%  \scalebox{1.2}{\input{images/puits_potentiel_fini.pdf}}
+  \includegraphics[scale=0.8]{images/puits_potentiel_fini.pdf}
   \caption{Illustration d'un puits de potentiel fini de largeur $a$ et de profondeur $V_0$.}
   \label{fig:chap2-potentiel_fini}
 \end{figure}
@@ -132,22 +206,12 @@ Un puits de potentiel fini est un cas assez basique de potentiel carré. Une ima
     \rho &= \sqrt{-\dfrac{2mE}{\hbar}} \quad \in \mathbb{C} \\
     k &= \sqrt{\dfrac{2m(E+V_0)}{\hbar}} \quad \in \mathbb{R} \\
   \end{align}
-  Les coeffiecients apparaissant dans la forme de la fonction d'onde doivent être déterminés. C'est la physique du problème qui nous les offira. Les conditions les plus simples auxquelles une fonction d'onde doit répondre sont :
-  \begin{table}[h!]
-    \centering
-    \begin{tabular}{r|p{10cm}}
-      %\bleu
-      {\textbf{Fonction bornée}} & pour que la fonction soit de carré sommable (ch.4) \\ \rule{0pt}{20pt}
-      %\bleu
-      {\textbf{Fonction continue}} & garantit la conservation de la probabilité \\\rule{0pt}{20pt}
-      %\bleu
-      {\textbf{Dérivée continue}} & offre une quantification de l'énergie 
-    \end{tabular}
-    \caption{Conditions de raccord lors de la résolution d'une équation de Schrödinger qui peut s'étudier en différentes zones distinctes.}
-    \label{tab:chap2-conditions_de_raccord}
-  \end{table}
-  
-  Dans le cas d'un puits de potentiel fini, il n'y a pas d'autres conditions particulières à imposer. La première impose $B_1' = B_3 = 0$. \\
+  Les coefficients apparaissant dans la forme de la fonction d'onde doivent être déterminés. C'est la physique du problème qui nous les offira. Les conditions que doit remplir une fonction d'onde sont :
+  \begin{itemize}
+    \item $\varphi$ continue 
+    \item $\varphi'$ continue
+  \end{itemize}
+  Et ce, même si le potentiel est discontinu. Dans le cas d'un puits de potentiel fini, il n'y a pas d'autres conditions particulières à imposer. La première impose $B_1' = B_3 = 0$. \\
   
   Les deux suivantes imposent ensembles :
   \begin{equation}
