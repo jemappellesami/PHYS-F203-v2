@@ -4,6 +4,21 @@
 \usepackage{amsmath,amsfonts,amsthm,amssymb}
 \usepackage{tikz, xcolor}
 
+% Nouvelle commande Sami
+\usepackage{framed}
+\renewenvironment{leftbar}[1][\hsize]
+{%
+     \def\FrameCommand
+     {%
+         {\color{black}\vrule width 2pt}%
+         \hspace{7pt}%must no space.
+        % \fboxsep=\FrameSep\colorbox{yellow}%
+     }%
+     \MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
+}
+{\endMakeFramed}
+%%
+
 %\newcommand\bg[2]{
 %\begin{center} \fcolorbox{white}{BGgris}{\parbox{.9\linewidth}{\begin{large} %\textit{#1} \end{large} \\ #2 }}
 %\end{center}}
@@ -32,7 +47,7 @@ Un potentiel carré est un potentiel présentant des discontinuités sous la for
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\linewidth]{images/pot_carre.pdf}
+\includegraphics{images/pot_carre.pdf}
 \caption{Illustration d'un puits de potentiel carré en comparaison avec un puits de potentiel réel.}
 \label{fig:potentiel_carre}
 \end{figure}
@@ -50,7 +65,7 @@ Un puits de potentiel infini a des discontinuités tendant vers l'infini. Il peu
 
 \begin{figure}[h]
 \centering
-%\scalebox{1}{\input{images/puits_potentiel.pdf}}
+\includegraphics{images/puits_potentiel.pdf}
 \caption{Puits de potentiel.}
 \label{fig:puits_potentiel}
 \end{figure}
@@ -149,7 +164,7 @@ $$
 pour que la solution générale soit normée. 
 
 \subsubsection{Lien avec les séries de Fourier}
-Notons que la solution \eqref{eq:chap3-puits_fourier} ressemble à un développement en série de Fourier sur l'espace des fonctions $\varphi_n$ (la partie spatiale de $\psi_n$) si elles forment une base orthonormée. Pour cela, il faut que pour deux niveaux d'énergie différents $n, n' \in \mathbb{N}$ :
+Notons que la solution \eqref{eq:chap3-puits_fourier} ressemble à un développement en série de Fourier sur l'espace des fonctions $\varphi_n$ (la partie spatiale de $\psi_n$) si ces-dernières forment une base orthonormée. Pour cela, il faut que pour deux niveaux d'énergie différents $n, n' \in \mathbb{N}$ :
 $$
 \int_0 ^L \varphi_{n_1}(x) \varphi_{n_2}^*(x) \; dx = \delta_{n\; n'} \; .
 $$
@@ -208,21 +223,29 @@ Un puits de potentiel fini est un cas assez basique de potentiel carré. Une ima
   \end{align}
   Les coefficients apparaissant dans la forme de la fonction d'onde doivent être déterminés. C'est la physique du problème qui nous les offira. Les conditions que doit remplir une fonction d'onde sont :
   \begin{itemize}
+    \item $\varphi$ de carré sommable
     \item $\varphi$ continue 
     \item $\varphi'$ continue
   \end{itemize}
-  Et ce, même si le potentiel est discontinu. Dans le cas d'un puits de potentiel fini, il n'y a pas d'autres conditions particulières à imposer. La première impose $B_1' = B_3 = 0$. \\
+  Et ce, même si le potentiel est discontinu. Dans le cas d'un puits de potentiel fini, il n'y a pas d'autres conditions particulières à imposer. La première impose $B_1' = B_3 = 0$. En effet, il ne peut pas y avoir un terme dans la fonction d'onde qui tend vers l'infini quand $x$ tend vers l'infini vers la gauche (nous élimine $B_1'$) ni vers la droite (nous élimine $B_3'$). \\
   
   Les deux suivantes imposent ensembles :
   \begin{equation}\label{eq:chap3-pot_carre_conditions}
     \left(\dfrac{\rho - ik}{\rho + ik} \right) ^2 = e ^{2ika}
   \end{equation}
   \begin{proof}
-    Nous devons avoir $\varphi$ et $\partial_x \varphi$ continues, donc particulièrement en $x=-a/2$ et $x=a/2$.
+    Nous devons avoir $\varphi$ et $\partial_x \varphi$ continues, donc particulièrement en $x=-a/2$ et $x=a/2$. En $x=-a/2$, c'est la continuité entre les zones I et II qui est sollicitée, tandis que pour $x=a/2$, c'est entre les zones II et III.
 
     $$
     \begin{array}{ll}
       x=-a/2 \; :& \left\{
+        \begin{array}{ll}
+          \varphi_{\mathrm{I}}(-a/2) &= \varphi_{\mathrm{II}}(-a/2) \\
+          \varphi_{\mathrm{I}}'(-a/2) &= \varphi_{\mathrm{II}}'(-a/2) \\
+        \end{array}
+      \right. \\
+      \strut \\
+      \iff& \left\{
         \begin{array}{ll}
           B_1 \; e^{-\rho\; a/2} &= A_2 e^{-ik\; a/2} + A_2 ' e^{ik\; a/2} \\
           \strut \\
@@ -232,12 +255,28 @@ Un puits de potentiel fini est un cas assez basique de potentiel carré. Une ima
       \strut \\
       \iff& \left\{
         \begin{array}{ll}
-          A_2 &= e^{(-\rho + ik)} a/2 \; \dfrac{\rho + ik}{2ik} B_1 \\
-          A_2 ' &= e^{-(\rho + ik)} a/2 \; \dfrac{\rho - ik}{2ik} B_1 \\
+          A_2 &= e^{(-\rho + ik) a/2} \quad \dfrac{\rho + ik}{2ik}\; B_1 \\
+          \strut \\ 
+          A_2 ' &= e^{-(\rho + ik) a/2} \quad \dfrac{\rho - ik}{2ik}\; B_1 \\
         \end{array}
       \right. \\
     \end{array}
     $$
+    De l'autre côté, pour $x=a/2$ :
+    $$
+    \begin{array}{ll}
+      x=a/2 \; :& \left\{
+        \begin{array}{ll}
+          B_3' \; e^{-\rho\; a/2} &= A_2 e^{ik\; a/2} + A_2 ' e^{-ik\; a/2} \\
+          \strut \\
+          -\rho B_3' e^{-\rho\; a/2} &= ik\left(A_2e^{ik\; a/2} - A_2 ' e^{-ik\; a/2}\right)
+        \end{array}
+      \right. 
+    \end{array}
+    $$
+    En multipliant la première équation du système par $\rho$ et en sommant par la deuxième, nous pouvons éliminer $B_3'$ et se retrouver avec une équation seulement de $A_2$ et $A_2'$. En utilisant les résultats trouvés pour $x=-a/2$ pour ces deux constantes, nous pouvons remplacer dans le système ci-dessus et éliminer $B_3'$. Cela donnera :
+    $$\dfrac{B_1}{2ik} \; \left((\rho+ik) e^{ika} - (\rho-ik)^2 e^{-ika}\right) = 0$$
+    $$B_1 \neq 0 \Rightarrow \left(\dfrac{\rho-ik}{\rho+ik}\right)^2 = e^{2ika}$$
 
   \end{proof}
   La condition \eqref{eq:chap3-pot_carre_conditions} possède deux solutions.
@@ -249,7 +288,7 @@ Un puits de potentiel fini est un cas assez basique de potentiel carré. Une ima
       \iff \dfrac{k}{\rho} &=& \tan\left(\dfrac{ka}{2}\right)
     \end{eqnarray*}
     
-    Posons à présent $k_0 = \sqrt{k^2 + \rho ^2}$ et exploitons la relation trigonométrique $$\dfrac{1}{\cos ^2(x)} = \tan^2(x) +1$$ en l'appliquant à $ka/2$. Il vient :
+    Posons à présent $$k_0 = \sqrt{k^2 + \rho ^2} = \sqrt{\dfrac{2mV_0}{\hbar}}\; $$ et exploitons la relation trigonométrique $$\dfrac{1}{\cos ^2(x)} = \tan^2(x) +1$$ en l'appliquant à $ka/2$. Il vient :
     $$\dfrac{1}{\cos ^2\left(\dfrac{ka}{2}\right)} = \tan^2\left(\dfrac{ka}{2}\right) +1  = \dfrac{k^2 + \rho^2}{k^2} = \left(\dfrac{k}{k_0}\right)^2$$
     La solution s'obtient donc en résolvant le système d'équations suivant :
     \begin{equation}
@@ -275,11 +314,16 @@ La résolution de cette équation de Schrödinger passe par l'obtention de ces c
 \begin{figure}[h]
   \centering
   \includegraphics{images/chap2-puits_fini_solutions.pdf}
-  \caption{Résolution graphique d'une équation de Schrödinger. Partant de l'équation, une séparation a été faite en 3 zones, donnant des états d'énergie possibles au sein de la barrière (états \textbf{liés}) caractérisés par le nombre $k$. Les énergies des états liés sont ceux dont le $k$ donne un point d'intersection sur la figure.}
+  \caption{Résolution graphique d'une équation de Schrödinger pour plusieurs valeurs de potentiel. Partant de l'équation, une séparation a été faite en 3 zones, donnant des états d'énergie possibles au sein de la barrière (états \textbf{liés}) caractérisés par le nombre $k$. Les énergies des états liés sont ceux dont le $k$ donne un point d'intersection \textbf{numéroté} sur la figure. Deux autres exemples sont illustrés : le cas d'une particule n'ayant qu'un seul état lié (étant plongée dans un grand potentiel -- grand $k_0$), et celui d'une particule en ayant beaucoup en raison d'un faible potentiel -- faible $k_0$.}
+
+  \label{fig:chap3-puits_fini_solutions}
 \end{figure}
 
-De ce graphe nous tirons l'information suivante.
-Dépendant de la pente $1/k_0$, un certain nombre d'états liés peuvent exister. Particulièrement, lorsque $1/k_0  \geq A/(\pi a)$ (autrement dit $k_0 \leq \pi a$), alors la particule n'a qu'un seul état lié au potentiel. De manière générale, si $(n-1)\pi/a \leq k_0 \leq n\pi/a$, la particule aura $n$ états liés.
+Nous pouvons interpréter la figure \ref{fig:chap3-puits_fini_solutions} en mentionnant plusieurs observations :
+\begin{itemize}
+  \item  Dépendant de la pente $1/k_0$, un certain nombre d'états liés peuvent exister. Particulièrement, lorsque $1/k_0  \geq A/(\pi a)$ (autrement dit $k_0 \leq \pi a$), alors la particule n'a qu'un seul état lié au potentiel. De manière générale, si $(n-1)\pi/a \leq k_0 \leq n\pi/a$, la particule aura $n$ états liés.
+  \item La pente est $1/k_0$ et ne dépend donc pas de l'énergie. Seules les arcs de (co-)sinusoïdes contiennent une dépendance en énergie.
+\end{itemize}
 
 
 
@@ -288,7 +332,7 @@ Une marche de potentiel est similaire au puits fini mais avec un potentiel posit
 
 \begin{figure}[h]
   \centering
-  \scalebox{1.2}{\input{images/marche_potentiel.tex}}
+  \scalebox{1.2}{\includegraphics{images/marche_potentiel.pdf}}
   \caption{Illustration d'un puits de potentiel fini de largeur $a$ et de profondeur $V_0$.}
   \label{fig:chap2-marche_potentiel}
 \end{figure}
@@ -299,13 +343,13 @@ Une marche de potentiel est similaire au puits fini mais avec un potentiel posit
   \centering
   \includegraphics[width=.9\linewidth]{images/marche_potentiel_classique.pdf}
   \caption{Impact sur la trajectoire dans l'espace des phases (axes : position et impulsion, vitesse constante = ligne droite) d'une particule qui passe à travers une marche de potentiel.}
-  \label{fig:ch2-marche_potentiel_classique}
+  \label{fig:chap3-marche_potentiel_classique}
   \end{figure}
 %\end{wrapfigure}
 
-Etudier ce cas est très intéressant car une marche de potentiel en physique quantique donne un résultat extrêmement différent de la physique classique. En effet, en physique classique, une particule arrivant avec une énergie inférieure à $V_0$ rebondira. Avec une énergie supérieure à $V_0$, elle sera ralentie dans le potentiel (potentiel constant veut dire "force nulle" donc la particule a quoi qu'il arrive une vitesse constante) et repart avec sa vitesse initiale. Avec une énergie $E= V_0$, elle s'arrête.  Ces discussions sont reprises sur la figure ci-contre. \\
+Etudier ce cas est très intéressant car une marche de potentiel en physique quantique donne un résultat extrêmement différent de la physique classique. En effet, en physique classique (cf. figure \ref{fig:chap3-marche_potentiel_classique}), une particule arrivant avec une énergie inférieure à $V_0$ rebondira. Avec une énergie supérieure à $V_0$, elle sera ralentie dans le potentiel (potentiel constant veut dire "force nulle" donc la particule a quoi qu'il arrive une vitesse constante) et repart avec sa vitesse initiale. Le cas $E=V_0$ en mécanique classique est un cas particulier que nous aborderons pas \footnote{Il est siège d'une \textit{singularité} : même si nous sommes tentés, nous pouvons pas affirmer que la particule s'arrête.}.  Ces discussions sont reprises sur la figure ci-contre. \\
 
-Pour ce qui est de la physique quantique, il faut passer par une résolution de l'équation de Schrödinger. Comme pour le puits de potentiel, écrivons l'équation dans les différentes zones et écrivons les conditions de raccordement. Notons que la forme des solutions obtenues diffère selon si $E>$ ou $< V_0$.
+Pour ce qui est de la physique quantique, il faut passer par une résolution de l'équation de Schrödinger. Comme pour le puits de potentiel, écrivons l'équation dans les différentes zones et écrivons les conditions de raccordement. Notons que la forme des solutions obtenues diffère selon si $E>$ ou $< V_0$, mais dans les deux cas, nous pouvons poser $$k_1 = \sqrt{-\dfrac{2mE}{\hbar}} \in \mathbb{C}\; .$$
 \subsubsection{Résolution lorsque $E > V_0$}
 Nous pouvons poser le nombre 
 $$k_2 = \sqrt{\dfrac{2m(E-V_0)}{\hbar}}$$
@@ -322,16 +366,76 @@ de sorte à ce qu'il soit réel, et séparer en zones comme fait pour le puit de
   \end{equation}
   Ces équations sont simples à résoudre, et donnent :
   \begin{align}
-    \varphi_{\mathrm{I}}(x) &= A_1 e^{k_1 x} + A' _1 e^{-k_1 x} \\
+    \varphi_{\mathrm{I}}(x) &= A_1 e^{ik_1 x} + A' _1 e^{-ik_1 x} \\
     \varphi_{\mathrm{II}}(x) &= A_2 e^{ik_2 x} + A' _2 e^{-ik_2 x} \\
-    \varphi_{\mathrm{III}}(x) &= A_3 e^{k_1 x} + A' _3 e^{-k_1 x} 
+    \varphi_{\mathrm{III}}(x) &= A_3 e^{ik_1 x} + A' _3 e^{-ik_1 x} 
   \end{align}
-  où
-  $$
-    k_1 = \sqrt{-\dfrac{2mE}{\hbar}} \quad \in \mathbb{C} 
-  $$
-Les considérations physiques et les conditions de raccord impliquent encore des relations entre les coefficients. Notamment :
+D'entrée nous pouvons éliminer des termes que nous ne devons pas avoir dans la solution : ici, seul $A_3'$ est à éliminer, car $e^{-ik_1x}$ en troisième zone correspond à une particule incidente venant de $x=-\infty$ (pas possible en troisième zone). \\
 
+Les considérations physiques et les conditions de raccord impliquent encore des relations entre les autres coefficients. Notamment, la continuité de la fonction et de sa dérivée en $x=0$ et $x=L$.
+
+$$
+\begin{array}{rl}
+  x=0\; : &\left\{
+    \begin{array}{ll}
+      \varphi_{\mathrm{I}}(0) &= \varphi_{\mathrm{II}}(0) \\
+      \varphi_{\mathrm{I}}'(0) &= \varphi_{\mathrm{II}}'(0) \\
+    \end{array}
+  \right. \\
+  \strut \\
+  \iff  
+  &\left\{
+    \begin{array}{ll}
+      A_2 e^{ik_2L} +A_2'e^{-ik_2L} &= A_3 e^{ik_1L} \\
+      ik_2\left(A_2 e^{ik_2L} -A_2'e^{-ik_2L}\right) &= ik_1A_3 e^{ik_1L} \\
+    \end{array}
+  \right. \\
+  \strut \\
+  \iff  
+  &\left\{
+    \begin{array}{ll}
+      A_2 &= \dfrac{k_2+k_1}{2k_2} \; e^{i(k_1-k_2)L} A_3 \\
+      \strut \\
+      A_2' &= \dfrac{k_2-k_1}{2k_2} \; e^{i(k_1+k_2)L} A_3 \\
+    \end{array}
+  \right. \\
+  \strut \\
+  \strut \\
+  x=L \; : &\left\{ 
+    \begin{array}{ll}
+      A_1 + A_1' &= A_2 + A_2' \\
+      ik_1(A_1 - A_1') &= ik_2(A_2 - A_2') \\
+    \end{array}
+  \right. \\
+  \strut \\
+  \iff
+  &\left\{ 
+    \begin{array}{ll}
+      A_1 = \dfrac{k_1+k_2}{2k_1} \; A_2 + \dfrac{k_1-k_2}{2k_1} \; A_2' \\
+      \strut \\
+      A_1' = \dfrac{k_1-k_2}{2k_1} \; A_2 + \dfrac{k_1+k_2}{2k_1} \; A_2' \\
+    \end{array}
+  \right. \\
+\end{array}
+$$
+A présent, développons l'expression de $A_1$ en remplaçant dedans les expressions de $A_2$ et $A_2'$ précédemment calculées (pour $x=0$) : cela nous donnera $A_1$ en fonction de $A_3$. Nous avons :
+$$
+\begin{array}{ll}
+  A_1 &=  \dfrac{k_1+k_2}{2k_1} \; A_2 + \dfrac{k_1-k_2}{2k_1} \; A_2' \\
+  \strut \\
+      &=  \dfrac{k_1+k_2}{2k_1} \; \dfrac{k_2+k_1}{2k_2} \; e^{i(k_1-k_2)L} A_3 + \dfrac{k_1-k_2}{2k_1} \; \dfrac{k_2-k_1}{2k_2} \; e^{i(k_1+k_2)L} A_3 \\
+  \strut \\
+      &= \left[\left(\dfrac{k_2+k_1}{2k_2}\right)\left(\dfrac{k_1+k_2}{2k_1}\right) e^{-ik_2L} + \left(\dfrac{k_1-k_2}{2k_1}\right)\left(\dfrac{k_2-k_1}{2k_2}\right) e^{ik_2L}\right] \\
+  \strut \\
+      &= \dfrac{
+        \left[(k_1+k_2)^2+(k_1-k_2)^2\right] \; \cos(k_2L) +
+        i\left[(k_1+k_2)^2-(k_1-k_2)^2\right] \; \sin(k_2L) 
+      }{4k_1 k_2} \; e^{ik_1L} \; A_3 \\
+  \strut \\
+      &= \left[\cos(k_2L) - i \dfrac{k_1^2 + k_2^2}{2k_1k_2} \; \sin(k_2L)\right]
+\end{array}
+$$
+Avec un raisonnement très similaire, nous pouvons également obtenir une expression pour $A_1'$. Ainsi : 
 \begin{align}
   A_1 &= \left[\cos(k_2 L) - i \; \dfrac{k_1 ^2 + k_2 ^2}{2k_1k_2} \; \sin(k_2L) \right] e^{ik_1L}A_3 \\
   A_1 ' &= i \; \dfrac{k_2 ^2 - k_1 ^2}{2k_1 k_2}\; \sin(k_2L) \; e^{ik_1L} A_3
@@ -352,8 +456,28 @@ Les calculs dans ce cas précis montrent que :
   R &= \dfrac{(k_1 ^2 - k_2 ^ 2) ^2 \sin^2(k_2 L)}{4k_1 ^2 k_2 ^2 + (k_1 ^2 - k_2 ^ 2) ^2\sin(k_2L)} \\
   T &= \dfrac{4k_1 ^2 k_2 ^2}{4k_1 ^2 k_2 ^2 + (k_1 ^2 - k_2 ^ 2) ^2\sin(k_2L)} 
 \end{align}
-Chose chouette : 
+Chose remarquable : 
 $$ R + T = 1 \; .$$
+
+\vspace{11pt}
+\begin{leftbar}
+  \textit{Lien avec le courant de probabilité} \\
+
+  En effet, ceci n'est pas étonnant et est en réalité imposé par la \textbf{conservation du courant de probabilité} $$\mathrm{div} \vec{J} = 0 \; ,$$ où le courant s'exprime, en partant de la définition, par la forme suivante :
+  $$\begin{array}{ll}
+    \vec{J} &= \dfrac{\hbar}{m} \mathcal{I}m\left[\varphi^* (\vec{\nabla} \varphi)\right] \\
+    \strut \\
+        &= \dfrac{\hbar}{m} \mathcal{I}m\left[\left(A_1^* e^{-ik_1x}+A_1^{\prime *}e^{ik_1x}\right)\; ik_1\left(A_1 e^{ik_1x}-A_1' e^{-ik_1x}\right) \right]\; \vec{1}_x \\
+        \strut \\
+        &= \dfrac{\hbar}{m} \; k_1\left(|A_1|^2 - |A_1'|^2\right)\; \vec{1}_x \quad + \text{terme oscillant} \\
+        \strut \\
+        &\approx v_1 \left(|A_1|^2 - |A_1'|^2\right)\; \vec{1}_x
+  \end{array}$$
+  où 
+  $$v_1 = \dfrac{\hbar k_1}{m}$$
+  Le courant de probabilité est donc bien constant. \\
+\end{leftbar}
+
 Compte tenu des définitons des $k_i$, le coefficient de transmission peut se réécrire en fonction de $E$ sous la forme suivante :
 \begin{equation}
   T = \dfrac{4E (E-V_0)}{4E(E-V_0) + V_0 ^2 \sin ^ 2\left[\sqrt{2m(E-V_0)} L/\hbar\right]}
@@ -377,8 +501,32 @@ Observons ce qui se passe lorsque la barrière est très imposante par rapport �
 \sinh(x) = \dfrac{e^{x} - e^{-x}}{2} &\Rightarrow \sinh^2(x)_{|_{x\gg 1}} \sim e^{2x}/4 \\
 &\Rightarrow T \approx \dfrac{16(V_0-E)}{V_0 ^2} \; e^{-2\rho_2 L}
 \end{align}
-Nous voyons que lorsque la barrière est imposante (large et à haut potentiel), la particule a tout de même une probabilité non-nulle de la franchir. Ceci est propre à la mécanique quantique et ne serait jamais arrivé en mécanique classique. Ce phénomène porte le nom d'\textbf{Effet Tunnel} et possède comme application notable le microscope à effet tunnel.
+Nous voyons que lorsque la barrière est imposante (large et à haut potentiel), la particule a tout de même une probabilité non-nulle de la franchir. Ceci est propre à la mécanique quantique et ne serait jamais arrivé en mécanique classique. Ce phénomène porte le nom d'\textbf{Effet Tunnel} et possède comme application notable le microscope à effet tunnel. \\
 
+
+\subsubsection{Illustrations}
+Voici à présent plusieurs illustrations tirées d'une application développée par l'Université du Colorado, dont le lien est ci-dessous 
+\begin{center}
+  \href{https://phet.colorado.edu/sims/cheerpj/quantum-tunneling/latest/quantum-tunneling.html?simulation=quantum-tunneling}{https://phet.colorado.edu/sims/cheerpj/quantum-tunneling/latest/quantum-tunneling.html?simulation=quantum-tunneling} .
+\end{center}
+
+Nous pouvons placer les paramètres du système pour illustrer l'exemple que l'on veut, par exemple sur la figure \ref{fig:chap3-illustration_marche_potentiel} un potentiel tel que $E>V_0$, ou illustrer l'effet Tunnel en augmentant le potentiel pour qu'il devienne tel que $E<V_0$, comme sur la figure \ref{fig:chap3-illustration_effet_tunnel}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\linewidth]{images/chap3-marche_potentiel.png} \\
+  \includegraphics[width=0.9\linewidth]{images/chap3-marche_potentiel-2.png} 
+  \caption{Illustration de la propagation d'un paquet gaussien à travers une marche de potentiel avec $E>V_0$.}
+  \label{fig:chap3-illustration_marche_potentiel}
+\end{figure} 
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\linewidth]{images/chap3-effet_tunnel.png} \\
+  \includegraphics[width=0.9\linewidth]{images/chap3-effet_tunnel-2.png} 
+  \caption{Illustration de la propagation d'un paquet gaussien à travers une marche de potentiel avec $E<V_0$ (Effet tunnel).}
+  \label{fig:chap3-illustration_effet_tunnel}
+\end{figure}
 \newpage
 \section{Approximation semi-classique (WKB)}
 Toujours dans le cadre de l'étude de l'équation de Schrödinger, nous allons dans cette section étudier une solution \textbf{approximative} de cette équation, valable dans la limite $\hbar \longrightarrow0$. Cette approximation est nommée en l'honneur de Léon Brillouin, Hendrik Anthony Kramers et Gregor Wentzel. L'idée est la suivante : en poussant $\hbar$ vers zéro, nous devrions retrouver des résultats de la mécanique classique. Abordons donc cela en écrivant premièrement l'équation de Schrödinger. Ensuite, inteprétons la solution obtenue.
