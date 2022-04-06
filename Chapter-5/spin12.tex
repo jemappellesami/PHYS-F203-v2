@@ -1,7 +1,12 @@
 \documentclass{book}
+\usepackage[utf8]{inputenc}
 \usepackage[allcolors=true]{hyperref}
 \usepackage{graphicx}
 \usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{physics}
+\newtheorem{theorem}{Théorème}[section]
+\newtheorem{definition}[theorem]{Définition}
+
 \usepackage{tikz, xcolor}
 
 % Nouvelle commande Sami
@@ -185,7 +190,7 @@ Ainsi, de manière générale, le groupe des rotations aura plusieurs représent
 \end{definition}
 
 En mécanique quantique, une représentation de $SO(3)$ permet d'implémenter les transformations de rotation de la manière suivante :
-\begin{equation}
+\begin{equation} \label{eq:chap5-spin-transformation}
     \ket \psi \stackrel{R(\theta,\vec n)}{\longrightarrow} \exp(i\theta \; \vec n \cdot \vec J) \ket \psi
 \end{equation}
 
@@ -197,14 +202,121 @@ $$
     J_z &= xP_y - yP_x
 \end{array}
 $$
-\subsubsection{Invariance par rotation}
 
+\begin{leftbar}
+    \textit{Cette section a servi à introduire le \textbf{groupe des rotations} : la notion de groupe, de générateur, de représentation. Grâce à cela, nous aboutissons à une définition très générale des opérateurs qui implémentent une transformation de rotation.} \\
 
+    A présent, nous allons utiliser le formalisme introduit, principalement les relations de commutation, pour étudier davantage les rotations en mécanique quantique.
+\end{leftbar}
+\subsection{Invariance par rotation}
+Un système physique $S$ est par définition \textbf{invariant par rotation} si en lui appliquant à un moment donné une rotation quelconque $\mathcal{R}$ et que nous appliquons la même rotation à tous les systèmes ou appareils qui peuvent influer sur lui, ses propriétés et son comportement ne sont pas modifiés. \\
 
+En particulier, l'invariance par rotation en mécanique quantique veut dire entre autres que l'évolution d'un système se déroule de la même manière que s'il avait préalablement été sujet à une rotation. En pratique :
+\begin{itemize}
+    \item L'évolution dans le temps est décrite par l'équation de Schrödinger, et indique que $\ket{\psi(t)} = e^{-it \; H}$
+    \item Une rotation est générée par le moment cinétique du système, $\vec J$ : $$R(\theta, \vec n)\ket\psi = e^{i\theta \; \vec n \cdot \vec J}\ket \psi$$
+\end{itemize}
 
+Ainsi, en mécanique quantique, un système est invariant par rotation si 
+$$
+\underbrace{e^{-it\; H}}_{\text{Evol. temps}} \; 
+\underbrace{e^{i\theta \; \vec n\cdot \vec J}}_{\text{Rotation}} \; 
+\ket \psi = 
+e^{i\theta \; \vec n\cdot \vec J}\; 
+e^{-it\; H} \; 
+ \ket \psi 
+ \qquad \forall\;  \ket \psi , \vec n, \theta, t
+$$
+Et cette condition doit être vraie pour tout $\theta$ et $t$, que l'on peut peut prendre arbitrairement petits, pour obtenir la condition 
 
+\begin{equation}
+    [H, J_x] = [H, J_y] = [H, J_z] = 0
+\end{equation}
+{\color{red}{Je ne suis pas sûr du calcul qui mène à cela. J'arrive à $[H, J_x] + [H, J_y] + [H, J_z] =0$ et je ne vois pas comment affirmer la condition ci-dessus}}
 
+Qui correspond à une traduction de l'invariance par rotation : il faut et suffit que $H$ commute avec les opérateurs de rotations infinitésimales, qui correspondent aux trois composantes du moment cinétique total $\vec J$ du système.
 
+\subsubsection{Conséquences de l'invariance par rotation}
+L'invariance par rotation implique la \textbf{conservation du moment angulaire}. Montrons-le en deux temps :
+\begin{enumerate}
+    \item Si $\ket{\psi(t)}$ est solution de l'équation de Schrödinger $i\partial_t \ket\psi = H\ket\psi$, alors 
+    $$\begin{array}{ll}
+        \bra{\psi(t)}J_x\ket{\psi(t)} &= \bra{\psi(0)} e^{it\; H} J_x e^{-it\; H}\ket{\psi(0)} \\
+        \strut \\
+        &= \bra{\psi(0)}J_x\ket{\psi(0)}
+    \end{array}$$
+    Etant donné que $J_x$ et $e^{\pm it\; H}$ commutent (vu que $H$ et $J_x$ commutent) {\color{red}{je ne suis pas sûr de cette justification}}. La relation que nous venons d'obtenir montre que si $J_x$ est une observable, sa valeur moyenne dans l'état $\psi$ est constante à travers le temps.
+
+    \item Si $\ket \psi$ est vecteur propre de $J_x$ :
+    $$J_x\ket \psi = j \ket \psi$$
+    Alors, $\ket{\psi(t)} = \exp(-it\; H)\ket\psi$ est aussi un vecteur propre de $J_x$, avec la même valeur propre :
+    $$
+    \begin{array}{ll}
+        J_x \ket{\psi(t)} &= J_x e^{-it\; H}\ket\psi\\
+        \strut \\
+        &= e^{-it\; H}J_x \ket \psi \\
+        \strut \\
+        &= e^{-it\; H} j\ket \psi \\
+        \strut \\
+        &= j e^{-it\; H}\ket\psi \\
+        \strut \\
+        &= j \ket{\psi(t)}
+    \end{array}
+    $$
+    Ce dernier résultat est important car les valeurs propres et les états propres d'une observable sont les résultats et les états possibles après une mesure de la grandeur physique correspondant à cette observable. Ici, en prouvant ce point, nous prouvons que l'évolution dans le temps n'impacte pas la mesure du moment angulaire de la particule.
+\end{enumerate}
+
+Ces deux conséquences immédiates montrent que la \textbf{grandeur conservée} par l'\textbf{invariance par rotation} est le \textbf{moment angulaire} (ses trois composantes).
+
+\subsection{Quantification du moment angulaire}
+Le résultat dont nous allons discuter dans cette section est une \textbf{quantification du moment angulaire}, comme nous avions eu quantification de l'énergie dans des problèmes précédents. Concrètement, la structure de groupe, par exemple la relation de commutation 
+$$
+[J_x, J_y]=iJ_z
+$$
+impose en réalité des conditions sur les valeurs propres de l'observable $J_z$.
+
+\begin{theorem}
+    Les relations de commutation $[J_i, J_j] = i\varepsilon_{ijk} J_k$ impliquent que les valeurs propres de $J_k$ sont \textbf{demi-entières} : 
+    $$J_k \ket \psi = m\ket \psi \quad \Rightarrow \; m=0, 1/2, 1, 3/2, \dots$$
+\end{theorem}
+
+Ce résultat sera prouvé dans le cours de BA3.
+\subsection{Exemple de représentation -- Matrices de Pauli}
+En introduisant le groupe des rotations, nous avons introduit la définition d'une représentation de ce groupe : un ensemble de matrices satisfaisant les relations de commutation \ref{eq:chap5-spin-commutation}. Ici, nous présentons un exemple de représentation avec des matrices $2\times2$ : les \textbf{matrices de Pauli}. 
+
+$$
+\sigma_x = \left(
+    \begin{array}{cc}
+        0&1 \\
+        1&0
+    \end{array}
+    \right)
+\qquad 
+\sigma_y = \left(
+    \begin{array}{cc}
+        0&-i \\
+        i&0
+    \end{array}
+    \right)
+\qquad 
+\sigma_z = \left(
+    \begin{array}{cc}
+        1&0 \\
+        0&-1
+    \end{array}
+    \right)
+$$
+ 
+$$J_x = \dfrac{1}{2}\sigma_x \qquad J_y = \dfrac{1}{2}\sigma_y \qquad J_z = \dfrac{1}{2}\sigma_z$$
+
+Nous pouvons vérifier les relations de commutation (notamment en vérifiant que $[\sigma_i, \sigma_j]=2i\varepsilon_{ijk}\sigma_k$), et d'autres relations :
+\begin{itemize}
+    \item $\{\sigma_i, \sigma_j\} = 2\delta_{ij} \mathbb{I}$
+    \item $\mathrm{Tr}(\sigma_i) = 0 \forall i$
+    \item $\sigma_i\sigma_j = \delta_{ij} \mathbb{I} + i\varepsilon_{ijk}\sigma_k$
+\end{itemize}
+
+\subsubsection{Valeurs propres et vecteurs propres des $J_i$}
 
 
 
